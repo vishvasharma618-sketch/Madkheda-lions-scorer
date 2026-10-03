@@ -16,8 +16,9 @@ button{font-weight:800;cursor:pointer}.blue{background:var(--blue);border-color:
 .score{font-size:48px;font-weight:950;letter-spacing:-2px}.team{font-size:19px;font-weight:900}.badge{display:inline-block;background:#1a2540;border:1px solid #2e3b5d;padding:5px 9px;border-radius:999px;font-size:12px}
 .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.actions button{min-height:54px;font-size:16px}.six{background:#7b32ff;border-color:#7b32ff}.four{background:#ef631d;border-color:#ef631d}.wkt{background:#db2948;border-color:#db2948}
 table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 5px;border-bottom:1px solid #273454;text-align:left}th{color:var(--muted)}.r{text-align:right}
-.ball{padding:7px;border-bottom:1px solid #273454}.flash{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#000b;font-size:min(17vw,150px);font-weight:1000;text-shadow:0 7px 25px #000;animation:pop 1.1s forwards}@keyframes pop{0%{opacity:0;transform:scale(.4)}12%{opacity:1;transform:scale(1.05)}70%{opacity:1}100%{opacity:0;transform:scale(1.1)}}.hidden{display:none!important}
-.overlay{position:fixed;left:0;right:0;bottom:0;width:100%;height:100%;background:transparent;display:flex;align-items:flex-end;justify-content:center;padding:0 10px 10px;pointer-events:none;z-index:50}.ov{width:min(1000px,100%);background:rgba(4,8,18,.92);border:2px solid #ffffff2a;border-radius:14px;padding:10px 14px;box-shadow:0 6px 30px #000;pointer-events:none}.ovhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.ovscore{font-size:clamp(34px,7vw,60px);font-weight:950;line-height:1}.ovteam{font-size:clamp(14px,2.2vw,20px);font-weight:900}.ovmeta{color:#b5c0da;font-size:clamp(11px,1.8vw,15px)}.last{margin-top:5px;font-size:clamp(14px,2.2vw,20px);font-weight:900}.conn{padding:7px 10px;border-radius:99px;font-size:12px;background:#40202a;color:#ff9aac}.conn.ok{background:#113d2d;color:#7ff0be}@media(max-width:600px){.overlay{padding:0 6px 6px}.ov{border-radius:10px;padding:8px 10px}.ovhead{gap:6px}.last{margin-top:3px}}
+.ball{padding:7px;border-bottom:1px solid #273454}.flash{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.6);z-index:100;display:flex;align-items:center;justify-content:center;min-width:min(72vw,720px);padding:22px 44px;border-radius:22px;background:rgba(0,0,0,.78);border:4px solid #fff;color:#fff;font-size:clamp(48px,10vw,130px);font-weight:1000;letter-spacing:2px;text-shadow:0 5px 18px #000;box-shadow:0 12px 45px #0009;animation:pop 1.1s forwards;pointer-events:none;text-align:center}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.08)}}@keyframes pop{0%{opacity:0;transform:scale(.4)}12%{opacity:1;transform:scale(1.05)}70%{opacity:1}100%{opacity:0;transform:scale(1.1)}}.hidden{display:none!important}
+.overlay{position:fixed;inset:0;width:100%;height:100%;background:transparent;display:flex;align-items:flex-end;justify-content:center;padding:0;pointer-events:none;z-index:50}.scorebar{width:100%;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(241,244,248,.98));color:#10213f;border-top:3px solid #d62d1f;box-shadow:0 -5px 20px #0007;font-family:Arial,sans-serif}.score-main{display:grid;grid-template-columns:minmax(230px,1.15fr) minmax(150px,.55fr) minmax(230px,1fr) minmax(170px,.7fr);align-items:stretch;min-height:72px}.team-pill{background:#e01913;color:#fff;display:flex;align-items:center;gap:10px;padding:8px 18px;font-size:clamp(15px,2.1vw,27px);font-weight:950;letter-spacing:.3px}.lion{font-size:clamp(22px,3vw,38px)}.big-score{display:flex;align-items:center;justify-content:center;gap:8px;font-size:clamp(34px,5vw,62px);font-weight:950;line-height:1;border-right:1px solid #cfd5df}.big-score small{font-size:clamp(14px,2vw,24px);font-weight:800}.players,.bowler{display:flex;flex-direction:column;justify-content:center;padding:7px 14px;border-right:1px solid #cfd5df;font-size:clamp(12px,1.5vw,19px);line-height:1.45}.players div{white-space:nowrap}.players span,.bowler span{font-weight:700}.players i{color:#d71912;font-style:normal;font-weight:1000}.score-bottom{display:flex;align-items:center;gap:28px;padding:8px 18px;background:#f7f8fa;border-top:1px solid #d8dde5;font-size:clamp(10px,1.35vw,16px);font-weight:700}.score-bottom b{color:#d71912;font-size:1.05em}.balls{margin-left:auto;display:flex;align-items:center;gap:6px}.balls span{margin-right:3px}.balls em{width:18px;height:18px;border-radius:50%;background:#5a6675;display:inline-block}.balls em.four{background:#ef631d}.balls em.six{background:#7b32ff}.balls em.wide{background:#287cff}.balls em.wicket{background:#db2948}.last-mini{position:absolute;left:50%;bottom:104px;transform:translateX(-50%);padding:7px 14px;border-radius:20px;background:#000c;color:#fff;font-weight:900;font-size:clamp(11px,1.4vw,16px);opacity:.9}@media(max-width:800px){.score-main{grid-template-columns:1fr 1fr}.team-pill{grid-column:1/2}.big-score{grid-column:2/3}.players{grid-column:1/2}.bowler{grid-column:2/3}.score-bottom{gap:12px;flex-wrap:wrap}.balls{margin-left:0}.last-mini{bottom:132px}}@media(max-width:480px){.score-main{min-height:0}.team-pill{font-size:13px;padding:7px 9px}.lion{font-size:20px}.big-score{font-size:31px}.big-score small{font-size:12px}.players,.bowler{font-size:11px;padding:5px 8px}.score-bottom{padding:6px 9px;font-size:9px;gap:8px}.balls em{width:13px;height:13px}.last-mini{bottom:105px;font-size:10px}}
+.conn{padding:7px 10px;border-radius:99px;font-size:12px;background:#40202a;color:#ff9aac}.conn.ok{background:#113d2d;color:#7ff0be}@media(max-width:600px){.overlay{padding:0 6px 6px}.ov{border-radius:10px;padding:8px 10px}.ovhead{gap:6px}.last{margin-top:3px}}
 </style>
 </head>
 <body>
@@ -87,10 +88,23 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 5px;b
 </div>
 
 <div id="overlayPage" class="hidden overlay">
-<div class="ov">
-<div class="ovhead"><div><div class="ovteam" id="ovTeams">Madkheda Lions vs Opponent</div><div class="ovmeta" id="ovOver">0.0 overs</div></div><div class="ovscore" id="ovScore">0/0</div></div>
-<div class="last" id="ovLast">LIVE</div>
-</div>
+  <div class="scorebar">
+    <div class="score-main">
+      <div class="team-pill"><span class="lion">🦁</span><span id="ovBatTeam">MADKHEDA LIONS</span></div>
+      <div class="big-score"><span id="ovScore">0/0</span> <small id="ovOver">(0.0 Ov)</small></div>
+      <div class="players">
+        <div><b id="ovStriker">BATSMAN</b> <span id="ovStrikerStat">0(0)</span><i>*</i></div>
+        <div><b id="ovNonStriker">BATSMAN</b> <span id="ovNonStrikerStat">0(0)</span></div>
+      </div>
+      <div class="bowler"><b id="ovBowler">BOWLER</b> <span id="ovBowlerStat">0-0</span></div>
+    </div>
+    <div class="score-bottom">
+      <div>CURRENT RUN RATE: <b id="ovCRR">0.00</b></div>
+      <div>PROJECTED SCORE: <b id="ovProjected">0</b></div>
+      <div class="balls"><span>OV.</span><em id="ball1"></em><em id="ball2"></em><em id="ball3"></em><em id="ball4"></em><em id="ball5"></em><em id="ball6"></em></div>
+    </div>
+    <div class="last-mini" id="ovLast">LIVE</div>
+  </div>
 </div>
 <div id="flash" class="hidden"></div>
 
@@ -112,7 +126,7 @@ const firebaseConfig = {
   appId: "1:405112906202:web:b17c1070701b5b5dcee0e3"
 };
 
-let db=null, state=null, unsubscribe=null, historyVisible=false;
+let db=null, state=null, unsubscribe=null, historyVisible=false, overlayLastEventTs=0;
 const $=id=>document.getElementById(id);
 const isOverlay=new URLSearchParams(location.search).get('mode')==='overlay';
 let currentId=new URLSearchParams(location.search).get('match')||'lions2026';
@@ -150,7 +164,7 @@ async function connectMatch(auto=false){
 }
 function connectOverlay(){
  const id=new URLSearchParams(location.search).get('match')||'lions2026';currentId=id;
- dbRef(id).on('value',snap=>{if(snap.exists()){state=snap.val();initPlayers(state);renderOverlay();$('connection').textContent='● LIVE';$('connection').className='conn ok';}});
+ dbRef(id).on('value',snap=>{if(snap.exists()){const incoming=snap.val();const newest=incoming.events?.at(-1);state=incoming;initPlayers(state);renderOverlay();$('connection').textContent='● LIVE';$('connection').className='conn ok';if(newest?.ts && newest.ts>overlayLastEventTs){if(overlayLastEventTs>0) showMatchFlash(newest.t||'');overlayLastEventTs=newest.ts;}}});
 }
 function showOverlayOnly(){$('app').classList.add('hidden');$('overlayPage').classList.remove('hidden');document.querySelector('header').classList.add('hidden');document.body.style.background='transparent';document.body.style.overflow='hidden';}
 function overlayUrl(){let u=new URL(location.href);u.searchParams.set('mode','overlay');u.searchParams.set('match',currentId);return u.toString();}
@@ -204,11 +218,30 @@ function render(){
  $('shareBox').textContent='Overlay: '+overlayUrl();
 }
 function renderOverlay(){
- if(!state)return;$('ovTeams').textContent=state.teamA+' vs '+state.teamB;$('ovScore').textContent=state.score+'/'+state.wickets;$('ovOver').textContent=Math.floor(state.balls/6)+'.'+state.balls%6+' overs';$('ovLast').textContent=state.last;
+ if(!state)return;
+ const team=state.batTeam?state.teamB:state.teamA;
+ $('ovBatTeam').textContent=(team||'MADKHEDA LIONS').toUpperCase();
+ $('ovScore').textContent=state.score+'/'+state.wickets;
+ $('ovOver').textContent='('+Math.floor(state.balls/6)+'.'+state.balls%6+' Ov)';
+ const striker=state.players?.[state.striker]||'BATSMAN'; const non=state.players?.[state.nonStriker]||'BATSMAN'; const bowler=state.players?.[state.bowler]||'BOWLER';
+ const sx=state.bat?.[striker]||{r:0,b:0}; const nx=state.bat?.[non]||{r:0,b:0};
+ $('ovStriker').textContent=striker.toUpperCase(); $('ovStrikerStat').textContent=sx.r+'('+sx.b+')';
+ $('ovNonStriker').textContent=non.toUpperCase(); $('ovNonStrikerStat').textContent=nx.r+'('+nx.b+')';
+ $('ovBowler').textContent=bowler.toUpperCase();
+ const balls=state.balls||0; const crr=balls?(state.score/(balls/6)):0; $('ovCRR').textContent=crr.toFixed(2);
+ const remain=Math.max(0,(state.oversLimit||20)*6-balls); const projected=balls?Math.round(state.score+crr*(remain/6)):0; $('ovProjected').textContent=projected;
+ const recent=(state.events||[]).slice(-6); for(let i=1;i<=6;i++){const el=$('ball'+i);el.className='';const e=recent[i-1]; if(e){const t=e.t||'';el.className=t.includes('WICKET')?'wicket':t.includes('SIX')?'six':t.includes('FOUR')?'four':t.includes('WIDE')?'wide':'';}}
+ $('ovLast').textContent=state.last||'LIVE';
 }
-function flash(t){
- if(isOverlay && /SIX|FOUR|WICKET|NO BALL/.test(t)){let f=$('flash');f.textContent=t.includes('WICKET')?'WICKET!':t.includes('SIX')?'SIX!':t.includes('FOUR')?'FOUR!':'NO BALL';f.className='flash';setTimeout(()=>f.className='hidden',1050);}
+function showMatchFlash(t){
+ if(!isOverlay || !/SIX|FOUR|WICKET|NO BALL/.test(t)) return;
+ const f=$('flash');
+ f.textContent=t.includes('WICKET')?'WICKET!':t.includes('SIX')?'SIX!':t.includes('FOUR')?'FOUR!':'NO BALL!';
+ f.className='flash';
+ clearTimeout(window.__flashTimer);
+ window.__flashTimer=setTimeout(()=>f.className='hidden',1100);
 }
+function flash(t){ showMatchFlash(t); }
 function copyOverlay(){navigator.clipboard?.writeText(overlayUrl()).then(()=>alert('Overlay link copied!')).catch(()=>prompt('Overlay link:',overlayUrl()));}
 function openOverlay(){window.open(overlayUrl(),'_blank');}
 function toggleHistory(){historyVisible=!historyVisible;$('history').innerHTML=historyVisible?(state.inningsHistory||[]).map(x=>`<div class="badge" style="margin:3px">${x.innings}. ${x.team}: ${x.score}/${x.wickets} (${Math.floor(x.balls/6)}.${x.balls%6})</div>`).join(''):'Hidden';}
