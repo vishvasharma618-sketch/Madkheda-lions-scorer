@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Madkheda Lions Pro Scorer</title>
+<style>
+:root{--bg:#070b16;--card:#10172a;--line:#273454;--txt:#f6f8ff;--muted:#9ca9c8;--blue:#287cff;--red:#d62d49;--green:#12a66b;--gold:#d9a21b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,Arial,sans-serif}
+header{background:#0d1426;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.wrap{max-width:1150px;margin:auto;padding:14px}
+h1{font-size:21px;margin:0 0 3px}.muted{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}@media(max-width:850px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:14px;box-shadow:0 8px 30px #0004}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1;min-width:110px}
+input,select,button{width:100%;font:inherit;border-radius:10px;border:1px solid #374565;background:#0b1121;color:#fff;padding:11px}
+button{font-weight:800;cursor:pointer}.blue{background:var(--blue);border-color:var(--blue)}.green{background:var(--green);border-color:var(--green)}.red{background:var(--red);border-color:var(--red)}.gold{background:var(--gold);border-color:var(--gold);color:#111}.ghost{background:#151e35}
+.score{font-size:48px;font-weight:950;letter-spacing:-2px}.team{font-size:19px;font-weight:900}.badge{display:inline-block;background:#1a2540;border:1px solid #2e3b5d;padding:5px 9px;border-radius:999px;font-size:12px}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.actions button{min-height:54px;font-size:16px}.six{background:#7b32ff;border-color:#7b32ff}.four{background:#ef631d;border-color:#ef631d}.wkt{background:#db2948;border-color:#db2948}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 5px;border-bottom:1px solid #273454;text-align:left}th{color:var(--muted)}.r{text-align:right}
+.ball{padding:7px;border-bottom:1px solid #273454}.flash{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#000b;font-size:min(17vw,150px);font-weight:1000;text-shadow:0 7px 25px #000;animation:pop 1.1s forwards}@keyframes pop{0%{opacity:0;transform:scale(.4)}12%{opacity:1;transform:scale(1.05)}70%{opacity:1}100%{opacity:0;transform:scale(1.1)}}.hidden{display:none!important}
+.overlay{min-height:100vh;background:transparent;display:flex;align-items:flex-end;justify-content:center;padding:16px}.ov{width:min(1000px,100%);background:rgba(4,8,18,.92);border:2px solid #ffffff2a;border-radius:18px;padding:13px;box-shadow:0 10px 50px #000}.ovhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.ovscore{font-size:44px;font-weight:950}.ovteam{font-size:17px;font-weight:900}.ovmeta{color:#b5c0da;font-size:13px}.last{margin-top:8px;font-size:18px;font-weight:900}.conn{padding:7px 10px;border-radius:99px;font-size:12px;background:#40202a;color:#ff9aac}.conn.ok{background:#113d2d;color:#7ff0be}
+</style>
+</head>
+<body>
+<header><div class="wrap row">
+<div><h1>🏏 Madkheda Lions — PRO LIVE SCORER</h1><div class="muted">Real-time controller + YouTube overlay</div></div>
+<div id="connection" class="conn">Firebase not connected</div>
+</div></header>
+
+<div id="app" class="wrap">
+<div class="card">
+<h3>☁️ Online Match</h3>
+<div class="row">
+<input id="matchId" value="lions2026" placeholder="Match ID">
+<input id="teamA" value="Madkheda Lions" placeholder="Team A">
+<input id="teamB" value="Opponent" placeholder="Team B">
+<input id="oversLimit" type="number" min="1" value="20" placeholder="Overs">
+</div>
+<div class="row" style="margin-top:8px">
+<button class="blue" onclick="connectMatch()">Connect / Start Match</button>
+<button class="ghost" onclick="copyOverlay()">Copy Overlay Link</button>
+<button class="ghost" onclick="openOverlay()">Open Overlay</button>
+<button class="red" onclick="resetOnline()">Reset Match</button>
+</div>
+<div id="shareBox" class="muted" style="margin-top:8px"></div>
+</div>
+
+<div class="grid">
+<main>
+<div class="card">
+<div class="team" id="batTeam">Madkheda Lions</div>
+<div class="score" id="score">0/0</div>
+<div class="muted" id="overText">0.0 overs</div>
+<div class="row" style="margin-top:10px">
+<select id="striker"></select><select id="nonStriker"></select><select id="bowler"></select>
+</div>
+<div class="actions" style="margin-top:10px">
+<button onclick="scoreRun(0)">0</button><button onclick="scoreRun(1)">1</button><button onclick="scoreRun(2)">2</button><button onclick="scoreRun(3)">3</button>
+<button class="four" onclick="scoreRun(4)">FOUR</button><button class="six" onclick="scoreRun(6)">SIX</button><button onclick="extra('wide')">WIDE</button><button onclick="extra('noball')">NO BALL</button>
+<button onclick="extra('bye')">BYE</button><button onclick="extra('legbye')">LEG BYE</button><button class="wkt" onclick="wicket()">WICKET</button><button class="gold" onclick="undo()">UNDO</button>
+</div>
+<div id="last" class="badge" style="margin-top:10px">READY</div>
+</div>
+
+<div class="card">
+<h3>👥 Players</h3>
+<div class="row"><input id="playerName" placeholder="Player name"><button class="green" onclick="addPlayer()">Add Player</button></div>
+<div id="playerList" style="margin-top:8px"></div>
+</div>
+
+<div class="card">
+<h3>🎙 Ball-by-ball</h3>
+<div id="balls" class="muted">No balls yet.</div>
+</div>
+</main>
+
+<aside>
+<div class="card"><h3>📊 Batting Scorecard</h3><div id="scorecard"></div></div>
+<div class="card"><h3>🎯 Match</h3>
+<div class="row"><button class="gold" onclick="endInnings()">End Innings</button><button onclick="toggleHistory()">Previous Innings</button></div>
+<div id="history" class="muted" style="margin-top:10px"></div>
+</div>
+<div class="card"><h3>📺 Overlay</h3>
+<div class="muted">PRISM/OBS में Overlay Link को browser/web source के रूप में लगाएँ। Overlay live database से score पढ़ेगा.</div>
+</div>
+</aside>
+</div>
+</div>
+
+<div id="overlayPage" class="hidden overlay">
+<div class="ov">
+<div class="ovhead"><div><div class="ovteam" id="ovTeams">Madkheda Lions vs Opponent</div><div class="ovmeta" id="ovOver">0.0 overs</div></div><div class="ovscore" id="ovScore">0/0</div></div>
+<div class="last" id="ovLast">LIVE</div>
+</div>
+</div>
+<div id="flash" class="hidden"></div>
+
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-database-compat.js"></script>
+<script>
+
+/* ================= FIREBASE CONFIG =================
+   Replace these 6 values with your Firebase Web App config.
+   Firebase Console -> Project settings -> Your apps -> Web app.
+====================================================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBUp5W_31S5X9qQQHT_sLWSqy8MpSFuZPs",
+  authDomain: "madkheda-lions.firebaseapp.com",
+  databaseURL: "https://madkheda-lions-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "madkheda-lions",
+  storageBucket: "madkheda-lions.firebasestorage.app",
+  messagingSenderId: "405112906202",
+  appId: "1:405112906202:web:b17c1070701b5b5dcee0e3"
+};
+
+let db=null, state=null, unsubscribe=null, historyVisible=false;
+const $=id=>document.getElementById(id);
+const isOverlay=new URLSearchParams(location.search).get('mode')==='overlay';
+let currentId=new URLSearchParams(location.search).get('match')||'lions2026';
+
+function blank(){
+ return {teamA:'Madkheda Lions',teamB:'Opponent',oversLimit:20,batTeam:0,score:0,wickets:0,balls:0,innings:1,
+ players:Array.from({length:11},(_,i)=>'Player '+(i+1)),
+ bat:{},bowl:{},striker:0,nonStriker:1,bowler:0,events:[],last:'LIVE',inningsHistory:[]};
+}
+function initPlayers(s){
+ s.players.forEach(p=>{if(!s.bat[p])s.bat[p]={r:0,b:0,f:0,s:0,out:false};});
+}
+function dbRef(id){return db.ref('matches/'+id);}
+function validConfig(){return !firebaseConfig.apiKey.startsWith('PASTE_') && !firebaseConfig.projectId.startsWith('PASTE_') && !firebaseConfig.databaseURL.includes('PASTE_');}
+
+async function boot(){
+ if(!validConfig()){ $('connection').textContent='Firebase config डालना बाकी है'; if(isOverlay) showOverlayOnly(); return; }
+ const app=firebase.initializeApp(firebaseConfig); db=firebase.database();
+ $('connection').textContent='Connecting...';
+ if(isOverlay){showOverlayOnly(); connectOverlay();} else {await connectMatch(true);}
+}
+async function connectMatch(auto=false){
+ if(!db){alert('पहले Firebase config भरें।');return}
+ currentId=$('matchId').value.trim()||'lions2026';
+ const r=dbRef(currentId);
+ r.on('value',snap=>{
+   if(snap.exists()){state=snap.val();initPlayers(state);render();}
+   else if(!auto || !snap.exists()){
+     state=blank();state.matchId=currentId;state.teamA=$('teamA').value||'Madkheda Lions';state.teamB=$('teamB').value||'Opponent';state.oversLimit=+$('oversLimit').value||20;initPlayers(state);r.set(state);
+   }
+   $('connection').textContent='● LIVE SYNC';$('connection').className='conn ok';
+ });
+ const url=new URL(location.href);url.searchParams.set('match',currentId);history.replaceState(null,'',url);
+ $('shareBox').textContent='Overlay: '+overlayUrl();
+}
+function connectOverlay(){
+ const id=new URLSearchParams(location.search).get('match')||'lions2026';currentId=id;
+ dbRef(id).on('value',snap=>{if(snap.exists()){state=snap.val();initPlayers(state);renderOverlay();$('connection').textContent='● LIVE';$('connection').className='conn ok';}});
+}
+function showOverlayOnly(){$('app').classList.add('hidden');$('overlayPage').classList.remove('hidden');document.body.style.background='transparent';}
+function overlayUrl(){let u=new URL(location.href);u.searchParams.set('mode','overlay');u.searchParams.set('match',currentId);return u.toString();}
+function save(){if(db&&state)dbRef(currentId).set(state);}
+function selected(){state.striker=+$('striker').value;state.nonStriker=+$('nonStriker').value;state.bowler=+$('bowler').value;}
+function eventText(t){return `${Math.floor(state.balls/6)}.${state.balls%6} — ${t}`;}
+function addEvent(t,legal=true){state.events=state.events||[];state.events.push({t,legal,ts:Date.now()});if(legal)state.balls++;state.last=t;save();flash(t);}
+function scoreRun(n){
+ if(!state)return;selected();let p=state.players[state.striker],x=state.bat[p];x.r+=n;x.b++;if(n===4)x.f++;if(n===6)x.s++;state.score+=n;
+ const label=n===4?'FOUR':n===6?'SIX':String(n);addEvent(eventText(`${p}: ${label}`),true);
+ if(n%2)[state.striker,state.nonStriker]=[state.nonStriker,state.striker];
+}
+function extra(type){
+ if(!state)return;selected();let p=state.players[state.striker],label=type==='noball'?'NO BALL +1':type.toUpperCase()+' +1';
+ if(type==='wide'||type==='noball')state.score++; else state.bat[p].b++;
+ addEvent(eventText(label),type==='bye'||type==='legbye'); 
+}
+function wicket(){
+ if(!state)return;selected();let p=state.players[state.striker];state.bat[p].out=true;state.bat[p].b++;state.wickets++;
+ addEvent(eventText(`WICKET — ${p}`),true);
+ if(state.wickets>=10)endInnings();
+}
+function undo(){
+ if(!state?.events?.length)return;
+ state.events.pop(); // rebuild exact score from events is safer
+ rebuild();save();
+}
+function rebuild(){
+ const old=state, freshState=blank();Object.assign(freshState,{teamA:old.teamA,teamB:old.teamB,oversLimit:old.oversLimit,batTeam:old.batTeam,innings:old.innings,players:old.players,striker:old.striker,nonStriker:old.nonStriker,bowler:old.bowler,inningsHistory:old.inningsHistory||[],events:old.events||[]});
+ initPlayers(freshState);
+ // For robust undo, reconstruct common scoring events from text.
+ let score=0,w=0,balls=0; for(const e of freshState.events){if(e.legal)balls++;if(/WICKET/.test(e.t))w++;let m=e.t.match(/: (FOUR|SIX|[0-3])$/);if(m)score+=m[1]==='FOUR'?4:m[1]==='SIX'?6:+m[1];if(/WIDE|NO BALL/.test(e.t))score++;}
+ freshState.score=score;freshState.wickets=w;freshState.balls=balls;freshState.last=freshState.events.at(-1)?.t||'READY';state=freshState;
+}
+function endInnings(){
+ if(!state)return;
+ state.inningsHistory=state.inningsHistory||[];state.inningsHistory.push({innings:state.innings,team:state.batTeam?state.teamB:state.teamA,score:state.score,wickets:state.wickets,balls:state.balls});
+ state.innings++;state.batTeam=state.batTeam?0:1;state.score=0;state.wickets=0;state.balls=0;state.events=[];state.last='INNINGS BREAK';Object.values(state.bat).forEach(x=>{x.r=0;x.b=0;x.f=0;x.s=0;x.out=false});save();
+}
+function addPlayer(){if(!state)return;let n=$('playerName').value.trim();if(!n||state.players.includes(n))return;state.players.push(n);state.bat[n]={r:0,b:0,f:0,s:0,out:false};$('playerName').value='';save();}
+function resetOnline(){if(!state||!confirm('इस Match ID का online score पूरी तरह reset करना है?'))return;state=blank();state.matchId=currentId;state.teamA=$('teamA').value||'Madkheda Lions';state.teamB=$('teamB').value||'Opponent';state.oversLimit=+$('oversLimit').value||20;initPlayers(state);save();}
+function render(){
+ if(isOverlay){renderOverlay();return}
+ $('teamA').value=state.teamA;$('teamB').value=state.teamB;$('oversLimit').value=state.oversLimit;$('matchId').value=currentId;
+ $('batTeam').textContent=state.batTeam?state.teamB:state.teamA;$('score').textContent=state.score+'/'+state.wickets;$('overText').textContent=Math.floor(state.balls/6)+'.'+(state.balls%6)+' overs';$('last').textContent=state.last;
+ let opts=state.players.map((p,i)=>`<option value="${i}">${i+1}. ${p}</option>`).join('');$('striker').innerHTML=opts;$('nonStriker').innerHTML=opts;$('bowler').innerHTML=opts;
+ $('striker').value=state.striker;$('nonStriker').value=state.nonStriker;$('bowler').value=state.bowler;
+ $('playerList').innerHTML=state.players.map((p,i)=>`<div class="row" style="margin:5px 0"><span>${i+1}. ${p}</span><span class="badge">${state.bat[p].r} runs • ${state.bat[p].b} balls</span></div>`).join('');
+ $('scorecard').innerHTML='<table><tr><th>Batter</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr>'+state.players.map(p=>{let x=state.bat[p];return `<tr><td>${p}${x.out?' <span class="badge">OUT</span>':''}</td><td>${x.r}</td><td>${x.b}</td><td>${x.f}</td><td>${x.s}</td><td>${x.b?(100*x.r/x.b).toFixed(1):'0.0'}</td></tr>`}).join('')+'</table><p><b>Total: '+state.score+'/'+state.wickets+'</b> ('+Math.floor(state.balls/6)+'.'+state.balls%6+')</p>';
+ $('balls').innerHTML=(state.events?.length?state.events.slice(-25).reverse().map((e,i)=>`<div class="ball">${e.t}</div>`).join(''):'No balls yet.');
+ $('shareBox').textContent='Overlay: '+overlayUrl();
+}
+function renderOverlay(){
+ if(!state)return;$('ovTeams').textContent=state.teamA+' vs '+state.teamB;$('ovScore').textContent=state.score+'/'+state.wickets;$('ovOver').textContent=Math.floor(state.balls/6)+'.'+state.balls%6+' overs';$('ovLast').textContent=state.last;
+}
+function flash(t){
+ if(isOverlay && /SIX|FOUR|WICKET|NO BALL/.test(t)){let f=$('flash');f.textContent=t.includes('WICKET')?'WICKET!':t.includes('SIX')?'SIX!':t.includes('FOUR')?'FOUR!':'NO BALL';f.className='flash';setTimeout(()=>f.className='hidden',1050);}
+}
+function copyOverlay(){navigator.clipboard?.writeText(overlayUrl()).then(()=>alert('Overlay link copied!')).catch(()=>prompt('Overlay link:',overlayUrl()));}
+function openOverlay(){window.open(overlayUrl(),'_blank');}
+function toggleHistory(){historyVisible=!historyVisible;$('history').innerHTML=historyVisible?(state.inningsHistory||[]).map(x=>`<div class="badge" style="margin:3px">${x.innings}. ${x.team}: ${x.score}/${x.wickets} (${Math.floor(x.balls/6)}.${x.balls%6})</div>`).join(''):'Hidden';}
+boot();
+</script>
+</body>
+</html>
